@@ -1,3 +1,8 @@
+## 5.0.3
+
+- Updated dependencies to their latest versions.
+- Improved documentation and code quality.
+
 ## 5.0.2
 
 - iOS: Added a `twitter_sign_in.podspec` to match the plugin name for CocoaPods.
