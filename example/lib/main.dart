@@ -12,7 +12,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final String apiKey = 'S9GzajUq5r5V4VIvT0V0M1HrP';
-  final String apiSecretKey = 'U6NhHZxqRahi2StQYLz6mVhMZEow1HsaZ6igkNgJa47dfQ4fhI';
+  final String apiSecretKey =
+      'U6NhHZxqRahi2StQYLz6mVhMZEow1HsaZ6igkNgJa47dfQ4fhI';
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +42,12 @@ class _MyAppState extends State<MyApp> {
                 child: TextButton(
                   child: const Text('use Twitter API v1.1'),
                   style: ButtonStyle(
-                    foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
-                    backgroundColor: WidgetStateProperty.all<Color>(Colors.blueAccent),
-                    minimumSize: WidgetStateProperty.all<Size>(const Size(160, 48)),
+                    foregroundColor:
+                        WidgetStateProperty.all<Color>(Colors.white),
+                    backgroundColor:
+                        WidgetStateProperty.all<Color>(Colors.blueAccent),
+                    minimumSize:
+                        WidgetStateProperty.all<Size>(const Size(160, 48)),
                   ),
                   onPressed: () async {
                     await login();
@@ -55,9 +59,12 @@ class _MyAppState extends State<MyApp> {
                 child: TextButton(
                   child: const Text('use Twitter API v2.0'),
                   style: ButtonStyle(
-                    foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
-                    backgroundColor: WidgetStateProperty.all<Color>(Colors.blueAccent),
-                    minimumSize: WidgetStateProperty.all<Size>(const Size(160, 48)),
+                    foregroundColor:
+                        WidgetStateProperty.all<Color>(Colors.white),
+                    backgroundColor:
+                        WidgetStateProperty.all<Color>(Colors.blueAccent),
+                    minimumSize:
+                        WidgetStateProperty.all<Size>(const Size(160, 48)),
                   ),
                   onPressed: () async {
                     await loginV2();

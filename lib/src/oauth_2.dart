@@ -5,7 +5,8 @@ import 'package:twitter_sign_in/src/utils.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class Oauth2 {
-  static const String _oauth2TokenUrl = 'https://api.twitter.com/2/oauth2/token';
+  static const String _oauth2TokenUrl =
+      'https://api.twitter.com/2/oauth2/token';
 
   /// get applicatoin Bearer Token.
   ///
@@ -19,7 +20,10 @@ class Oauth2 {
       Uri.parse('https://api.twitter.com/oauth2/token').replace(
         queryParameters: {'grant_type': 'client_credentials'},
       ),
-      headers: <String, String>{'Authorization': 'Basic ${base64Encode(utf8.encode('$apiKey:$apiSecretKey'))}'},
+      headers: <String, String>{
+        'Authorization':
+            'Basic ${base64Encode(utf8.encode('$apiKey:$apiSecretKey'))}'
+      },
     );
 
     final json = jsonDecode(res.body) as Map<String, dynamic>;
@@ -40,7 +44,8 @@ class Oauth2 {
     };
 
     if (clientSecret != null && clientSecret.isNotEmpty) {
-      headers['Authorization'] = 'Basic ${base64Encode(utf8.encode('$clientId:$clientSecret'))}';
+      headers['Authorization'] =
+          'Basic ${base64Encode(utf8.encode('$clientId:$clientSecret'))}';
     }
 
     final res = await _httpClient.post(
@@ -74,7 +79,8 @@ class Oauth2 {
     };
 
     if (clientSecret != null && clientSecret.isNotEmpty) {
-      headers['Authorization'] = 'Basic ${base64Encode(utf8.encode('$clientId:$clientSecret'))}';
+      headers['Authorization'] =
+          'Basic ${base64Encode(utf8.encode('$clientId:$clientSecret'))}';
     }
 
     final res = await _httpClient.post(

@@ -45,7 +45,8 @@ class Signature {
     final uri = Uri.parse(url!);
     final encodedParams = encodeParams(uri, params!);
     final sortedEncodedKeys = encodedParams!.keys.toList()..sort();
-    final baseParams = sortedEncodedKeys.map((String k) => '$k=${encodedParams[k]}').join('&');
+    final baseParams =
+        sortedEncodedKeys.map((String k) => '$k=${encodedParams[k]}').join('&');
     final base = appendParams(method!, uri, baseParams);
     return base;
   }
@@ -81,7 +82,8 @@ class Signature {
   /// create a signing key which will be used to generate the signature
   String? getSignatureKey() {
     final consumerSecret = Uri.encodeComponent(apiSecretKey!);
-    final tokenSecret = tokenSecretKey != null ? Uri.encodeComponent(tokenSecretKey!) : '';
+    final tokenSecret =
+        tokenSecretKey != null ? Uri.encodeComponent(tokenSecretKey!) : '';
     return '$consumerSecret&$tokenSecret';
   }
 }

@@ -16,7 +16,8 @@ const AUTHORIZE_URI = 'https://api.twitter.com/oauth/authorize';
 const ACCESS_TOKEN_URI = 'https://api.twitter.com/oauth/access_token';
 
 /// The "Request email addresses from users"
-const ACCOUNT_VERIFY_URI = 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true';
+const ACCOUNT_VERIFY_URI =
+    'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true';
 
 const USER_LOCKUP_URI = 'https://api.twitter.com/2/users';
 
@@ -136,7 +137,8 @@ Map<String, String?> requestHeader({
 }
 
 String createCryptoRandomString([int length = 32]) {
-  final values = List<int>.generate(length, (i) => Random.secure().nextInt(256));
+  final values =
+      List<int>.generate(length, (i) => Random.secure().nextInt(256));
 
   return base64Url.encode(values);
 }

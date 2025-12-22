@@ -47,7 +47,8 @@ class User {
   /// If your Twitter account does not have an email address,
   /// or if the API is not configured to retrieve email addresses,
   /// you may not be able to retrieve email addresses.
-  @Deprecated('Discontinue if Twitter api v2 does not provide a way to get an email.')
+  @Deprecated(
+      'Discontinue if Twitter api v2 does not provide a way to get an email.')
   String get email => _email;
 
   /// thumbnailImage

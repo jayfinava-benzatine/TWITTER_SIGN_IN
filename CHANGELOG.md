@@ -1,3 +1,8 @@
+## 5.0.2
+
+- iOS: Added a `twitter_sign_in.podspec` to match the plugin name for CocoaPods.
+- iOS: Fixed Objective-C bridging header import to use `twitter_sign_in-Swift.h`.
+
 ## 5.0.1
 
 - Updated repository and homepage URLs to the new `jayfinava-benzatine` repository.
