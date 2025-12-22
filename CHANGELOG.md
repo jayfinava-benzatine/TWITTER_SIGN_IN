@@ -1,6 +1,6 @@
 ## 5.0.1
 
-- Updated repository and homepage URLs to the new `jayfinava` repository.
+- Updated repository and homepage URLs to the new `jayfinava-benzatine` repository.
 
 ## 5.0.0
 
