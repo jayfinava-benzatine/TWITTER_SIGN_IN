@@ -1,3 +1,7 @@
+## 5.0.1
+
+- Updated repository and homepage URLs to the new `jayfinava` repository.
+
 ## 5.0.0
 
 - Updated package name to `twitter_sign_in`.
@@ -15,7 +19,7 @@
 
 ## 4.4.0
 
-- Update dependency constraints to sdk: '>=2.14.0 <4.0.0' [#122](https://github.com/0maru/twitter_login/issues/122)
+- Update dependency constraints to sdk: '>=2.14.0 <4.0.0' [#122](https://github.com/jayfinava-benzatine/twitter_sign_in/issues/122)
 
 ## 4.3.2
 
@@ -27,11 +31,11 @@
 
 ## 4.3.0
 
-- Add MacOs support [#102](https://github.com/0maru/twitter_login/issues/102)
+- Add MacOs support [#102](https://github.com/jayfinava-benzatine/twitter_sign_in/issues/102)
 
 ## 4.2.3
 
-- fix parse json as nullable value [#99](https://github.com/0maru/twitter_login/pull/99)
+- fix parse json as nullable value [#99](https://github.com/jayfinava-benzatine/twitter_sign_in/pull/99)
 
 ## 4.2.2
 
@@ -43,20 +47,20 @@
 
 ## 4.2.0
 
-- Fixed conflict between FlutterActivity and NewIntentListener [#92](https://github.com/0maru/twitter_login/issues/92)
+- Fixed conflict between FlutterActivity and NewIntentListener [#92](https://github.com/jayfinava-benzatine/twitter_sign_in/issues/92)
 
 ## 4.1.1
 
-- Fix userId type [#94](https://github.com/0maru/twitter_login/pull/94)
+- Fix userId type [#94](https://github.com/jayfinava-benzatine/twitter_sign_in/pull/94)
 
 ## 4.1.0
 
 - Fix int cast of userId
-- Supported By Twitter API V2.0 ( Fixes [#67](https://github.com/0maru/twitter_login/issues/67) & [#69](https://github.com/0maru/twitter_login/issues/69) )
+- Supported By Twitter API V2.0 ( Fixes [#67](https://github.com/jayfinava-benzatine/twitter_sign_in/issues/67) & [#69](https://github.com/jayfinava-benzatine/twitter_sign_in/issues/69) )
 
 ## 4.1.0-dev
 
-- Supported By Twitter API V2.0 ( Fixes [#67](https://github.com/0maru/twitter_login/issues/67) & [#69](https://github.com/0maru/twitter_login/issues/69) )
+- Supported By Twitter API V2.0 ( Fixes [#67](https://github.com/jayfinava-benzatine/twitter_sign_in/issues/67) & [#69](https://github.com/jayfinava-benzatine/twitter_sign_in/issues/69) )
 
 ## 4.0.1
 
@@ -64,12 +68,12 @@
 
 ## 4.0.0
 
-- remove flutter_inappwebview as a dependency [#48](https://github.com/0maru/twitter_login/issues/48)
+- remove flutter_inappwebview as a dependency [#48](https://github.com/jayfinava-benzatine/twitter_sign_in/issues/48)
 - update dependencies
 
 ## 3.0.8
 
-- Fix Future Complete [#44](https://github.com/0maru/twitter_login/issues/44)
+- Fix Future Complete [#44](https://github.com/jayfinava-benzatine/twitter_sign_in/issues/44)
 
 ## 3.0.7
 
@@ -77,7 +81,7 @@
 
 ## 3.0.6
 
-- Fix userId type [#41](https://github.com/0maru/twitter_login/pull/41)
+- Fix userId type [#41](https://github.com/jayfinava-benzatine/twitter_sign_in/pull/41)
 
 ## 3.0.5
 
@@ -85,7 +89,7 @@
 
 ## 3.0.4
 
-- update dependencies ( Fixes [#34](https://github.com/0maru/twitter_login/issues/34) & [#32](https://github.com/0maru/twitter_login/issues/32) )
+- update dependencies ( Fixes [#34](https://github.com/jayfinava-benzatine/twitter_sign_in/issues/34) & [#32](https://github.com/jayfinava-benzatine/twitter_sign_in/issues/32) )
 
 ## 3.0.1-nullsafety.0
 

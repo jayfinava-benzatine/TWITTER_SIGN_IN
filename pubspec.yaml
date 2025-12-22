@@ -1,10 +1,10 @@
 name: twitter_sign_in
 description: A Flutter plugin for signing in with Twitter.
 
-version: 5.0.0
+version: 5.0.1
 
-homepage: https://twitter.com/0maru_dev
-repository: https://github.com/0maru/twitter_login
+homepage: https://github.com/jayfinava-benzatine/twitter_sign_in
+repository: https://github.com/jayfinava-benzatine/twitter_sign_in
 
 environment:
   sdk: ">=2.14.0 <4.0.0"

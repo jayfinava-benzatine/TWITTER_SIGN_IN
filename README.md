@@ -31,7 +31,7 @@ If you want to use email, turn on Request email address from users.
 
 ### Add intent filters for incoming links
 
-[/example/android/app/src/main/AndroidManifest.xm](https://github.com/0maru/twitter_sign_in/blob/master/example/android/app/src/main/AndroidManifest.xml)
+[/example/android/app/src/main/AndroidManifest.xm](https://github.com/jayfinava-benzatine/twitter_sign_in/blob/master/example/android/app/src/main/AndroidManifest.xml)
 
 You need to replace the scheme with a Callback URLs.
 
@@ -63,7 +63,7 @@ Flutter wiki: [Upgrading pre 1.12 Android projects.](https://github.com/flutter/
 
 ### Add URLScheme
 
-[/example/ios/Runner/Info.plist](https://github.com/0maru/twitter_sign_in/blob/master/example/ios/Runner/Info.plist#L21)
+[/example/ios/Runner/Info.plist](https://github.com/jayfinava-benzatine/twitter_sign_in/blob/master/example/ios/Runner/Info.plist#L21)
 
 You need to replace the example with a Callback URLs.
 
@@ -88,7 +88,7 @@ You need to replace the example with a Callback URLs.
 
 See the example directory for a complete sample app using twitter_sign_in.
 
-[example](https://github.com/0maru/twitter_sign_in/tree/master/example)
+[example](https://github.com/jayfinava-benzatine/twitter_sign_in/tree/master/example)
 
 # Usage
 
