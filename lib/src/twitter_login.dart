@@ -212,19 +212,16 @@ class TwitterLogin {
     }
   }
 
-  Future<String> getAuthorizationCode({
-    String? codeVerifier,
-    String? codeChallenge,
-  }) async {
+  Future<String> getAuthorizationCode({String? codeChallenge}) async {
     String? resultURI;
     final uri = Uri.parse(redirectURI);
 
-    if (codeChallenge != null && codeVerifier == null) {
+    if (codeChallenge != null) {
       throw ArgumentError(
           'If you provide a codeChallenge, you must also provide the codeVerifier.');
     }
 
-    final verifier = codeVerifier ?? createCryptoRandomString(64);
+    final verifier = createCryptoRandomString(64);
     final challenge = codeChallenge ?? createPkceCodeChallengeS256(verifier);
     final state = createCryptoRandomString(32);
 
@@ -313,10 +310,7 @@ class TwitterLogin {
     // https://docs.x.com/fundamentals/authentication/oauth-2-0/user-access-token
 
     try {
-      final code = await getAuthorizationCode(
-        codeVerifier: codeVerifier,
-        codeChallenge: codeChallenge,
-      );
+      final code = await getAuthorizationCode(codeChallenge: codeChallenge);
 
       final verifier = codeVerifier ?? createCryptoRandomString(64);
 
