@@ -1,3 +1,10 @@
+## 5.0.4
+
+- **Enhanced Error Handling**: Improved error messages and handling throughout the authentication flow.
+- **OAuth 2.0 Flow**: Fixed issues with the OAuth 2.0 authorization code flow.
+- **Code Quality**: Improved code formatting and consistency.
+- **Dependencies**: Updated to the latest stable versions of all dependencies.
+
 ## 5.0.3
 
 - Updated dependencies to their latest versions.
