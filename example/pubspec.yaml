@@ -1,14 +1,14 @@
-name: twitter_login_example
-description: Demonstrates how to use the twitter_login plugin.
-publish_to: 'none'
+name: twitter_sign_in_example
+description: Demonstrates how to use the twitter_sign_in plugin.
+publish_to: "none"
 
 environment:
-  sdk: '>=2.14.0 <4.0.0'
+  sdk: ">=2.14.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  twitter_login:
+  twitter_sign_in:
     path: ../
 
 dev_dependencies:
@@ -19,4 +19,3 @@ flutter:
   uses-material-design: true
   assets:
     - assets/twitter_dashboard.png
-

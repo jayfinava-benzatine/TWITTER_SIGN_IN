@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:twitter_login/twitter_login.dart';
+import 'package:twitter_sign_in/twitter_login.dart';
 
 void main() {
   runApp(MyApp());
@@ -41,9 +41,9 @@ class _MyAppState extends State<MyApp> {
                 child: TextButton(
                   child: const Text('use Twitter API v1.1'),
                   style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.blueAccent),
-                    minimumSize: MaterialStateProperty.all<Size>(const Size(160, 48)),
+                    foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+                    backgroundColor: WidgetStateProperty.all<Color>(Colors.blueAccent),
+                    minimumSize: WidgetStateProperty.all<Size>(const Size(160, 48)),
                   ),
                   onPressed: () async {
                     await login();
@@ -55,9 +55,9 @@ class _MyAppState extends State<MyApp> {
                 child: TextButton(
                   child: const Text('use Twitter API v2.0'),
                   style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.blueAccent),
-                    minimumSize: MaterialStateProperty.all<Size>(const Size(160, 48)),
+                    foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+                    backgroundColor: WidgetStateProperty.all<Color>(Colors.blueAccent),
+                    minimumSize: WidgetStateProperty.all<Size>(const Size(160, 48)),
                   ),
                   onPressed: () async {
                     await loginV2();

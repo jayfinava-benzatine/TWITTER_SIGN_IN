@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:twitter_login/src/exception.dart';
-import 'package:twitter_login/src/utils.dart';
+import 'package:twitter_sign_in/src/exception.dart';
+import 'package:twitter_sign_in/src/utils.dart';
 
 const String methodName = 'twitter_login/auth_browser';
 

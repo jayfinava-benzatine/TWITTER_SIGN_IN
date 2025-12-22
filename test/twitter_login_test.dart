@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:twitter_login/entity/user.dart';
+import 'package:twitter_sign_in/entity/user.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

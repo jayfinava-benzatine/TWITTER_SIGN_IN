@@ -1,6 +1,6 @@
-# twitter_login
+# twitter_sign_in
 
-![Pub Version](https://img.shields.io/pub/v/twitter_login?color=blue)
+![Pub Version](https://img.shields.io/pub/v/twitter_sign_in?color=blue)
 
 Flutter Twitter Login Plugin
 
@@ -31,7 +31,7 @@ If you want to use email, turn on Request email address from users.
 
 ### Add intent filters for incoming links
 
-[/example/android/app/src/main/AndroidManifest.xm](https://github.com/0maru/twitter_login/blob/master/example/android/app/src/main/AndroidManifest.xml)
+[/example/android/app/src/main/AndroidManifest.xm](https://github.com/0maru/twitter_sign_in/blob/master/example/android/app/src/main/AndroidManifest.xml)
 
 You need to replace the scheme with a Callback URLs.
 
@@ -63,7 +63,7 @@ Flutter wiki: [Upgrading pre 1.12 Android projects.](https://github.com/flutter/
 
 ### Add URLScheme
 
-[/example/ios/Runner/Info.plist](https://github.com/0maru/twitter_login/blob/master/example/ios/Runner/Info.plist#L21)
+[/example/ios/Runner/Info.plist](https://github.com/0maru/twitter_sign_in/blob/master/example/ios/Runner/Info.plist#L21)
 
 You need to replace the example with a Callback URLs.
 
@@ -86,19 +86,19 @@ You need to replace the example with a Callback URLs.
 
 # Example code
 
-See the example directory for a complete sample app using twitter_login.
+See the example directory for a complete sample app using twitter_sign_in.
 
-[example](https://github.com/0maru/twitter_login/tree/master/example)
+[example](https://github.com/0maru/twitter_sign_in/tree/master/example)
 
 # Usage
 
-To use this plugin, add `twitter_login` as a [dependency in your pubspec.yaml file.](https://flutter.dev/platform-plugins/)
+To use this plugin, add `twitter_sign_in` as a [dependency in your pubspec.yaml file.](https://flutter.dev/platform-plugins/)
 
 ### Example
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:twitter_login/twitter_login.dart';
+import 'package:twitter_sign_in/twitter_sign_in.dart';
 
 void main() {
   runApp(MyApp());

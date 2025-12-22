@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:twitter_login/schemes/access_token.dart';
+import 'package:twitter_sign_in/schemes/access_token.dart';
 
 void main() {
   group('access token json parse test', () {

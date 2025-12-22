@@ -1,5 +1,4 @@
-import 'package:twitter_login/src/oauth_2.dart';
-import 'package:twitter_login/src/utils.dart';
+import 'package:twitter_sign_in/src/utils.dart';
 
 /// https://developer.twitter.com/en/docs/twitter-api/data-dictionary/object-model/user
 class User {
@@ -91,22 +90,13 @@ class User {
   ///
   /// https://api.twitter.com/2/users
   static Future<User> getUserDataV2(
-    String apiKey,
-    String apiSecretKey,
     String accessToken,
-    String accessTokenSecret,
-    String userId,
   ) async {
     try {
-      final token = await Oauth2.getBearerToken(apiKey: apiKey, apiSecretKey: apiSecretKey);
-      if (token?.isEmpty ?? true) {
-        throw Exception();
-      }
-
       final params = await httpGetFromBearerToken(
-        '$USER_LOCKUP_URI/$userId',
+        '$USER_LOCKUP_URI/me',
         query: {'user.fields': 'id,name,username,profile_image_url'},
-        bearerToken: token!,
+        bearerToken: accessToken,
       );
 
       // migrate v2 user model to v1.0a user model.

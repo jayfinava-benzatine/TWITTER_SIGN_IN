@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
-import 'package:twitter_login/src/signature.dart';
+import 'package:twitter_sign_in/src/signature.dart';
 
 /// Allows a Consumer application to obtain an OAuth Request Token to request user authorization.
 const REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token';
@@ -15,8 +16,7 @@ const AUTHORIZE_URI = 'https://api.twitter.com/oauth/authorize';
 const ACCESS_TOKEN_URI = 'https://api.twitter.com/oauth/access_token';
 
 /// The "Request email addresses from users"
-const ACCOUNT_VERIFY_URI =
-    'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true';
+const ACCOUNT_VERIFY_URI = 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true';
 
 const USER_LOCKUP_URI = 'https://api.twitter.com/2/users';
 
@@ -139,6 +139,15 @@ String createCryptoRandomString([int length = 32]) {
   final values = List<int>.generate(length, (i) => Random.secure().nextInt(256));
 
   return base64Url.encode(values);
+}
+
+String base64UrlEncodeNoPadding(List<int> bytes) {
+  return base64Url.encode(bytes).replaceAll('=', '');
+}
+
+String createPkceCodeChallengeS256(String codeVerifier) {
+  final digest = sha256.convert(utf8.encode(codeVerifier));
+  return base64UrlEncodeNoPadding(digest.bytes);
 }
 
 extension MapExt on Map {
