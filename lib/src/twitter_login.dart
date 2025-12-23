@@ -44,48 +44,9 @@ class TwitterLogin {
 
   static const _channel = MethodChannel('twitter_login');
   static const _eventChannel = EventChannel('twitter_login/event');
-  static final Stream<dynamic> _eventStream =
-      _eventChannel.receiveBroadcastStream();
+  static final Stream<dynamic> _eventStream = _eventChannel.receiveBroadcastStream();
 
-  static String getAuthorizationCodeFromRedirectUriV2(
-    String redirectUrl, {
-    String? expectedState,
-  }) {
-    final parsed = Uri.parse(redirectUrl);
-    final queries = parsed.queryParameters;
-
-    if (queries['denied'] != null) {
-      throw const CanceledByUserException();
-    }
-
-    final error = queries['error'];
-    if (error != null && error.isNotEmpty) {
-      if (error == 'access_denied') {
-        throw const CanceledByUserException();
-      }
-      final errorDescription = queries['error_description'];
-      if (errorDescription != null && errorDescription.isNotEmpty) {
-        throw Exception('Error Response: $error ($errorDescription)');
-      }
-      throw Exception('Error Response: $error');
-    }
-
-    final returnedState = queries['state'];
-    if (expectedState != null && expectedState.isNotEmpty) {
-      if (returnedState == null || returnedState != expectedState) {
-        throw Exception('Invalid state returned from authorization.');
-      }
-    }
-
-    final code = queries['code'];
-    if (code == null || code.isEmpty) {
-      throw Exception('Authorization code not found.');
-    }
-
-    return code;
-  }
-
-  /// Logs the user
+  /// Logs the user using OAuth 1.0a
   /// Forces the user to enter their credentials to ensure the correct users account is authorized.
   Future<AuthResult> login({bool forceLogin = false}) async {
     String? resultURI;
@@ -131,17 +92,14 @@ class TwitterLogin {
     try {
       if (Platform.isIOS || Platform.isMacOS) {
         /// Login to Twitter account with SFAuthenticationSession or ASWebAuthenticationSession.
-        resultURI =
-            await authBrowser.doAuth(requestToken.authorizeURI, uri.scheme);
+        resultURI = await authBrowser.doAuth(requestToken.authorizeURI, uri.scheme);
       } else if (Platform.isAndroid) {
         // Login to Twitter account with chrome_custom_tabs.
-        final success =
-            await authBrowser.open(requestToken.authorizeURI, uri.scheme);
+        final success = await authBrowser.open(requestToken.authorizeURI, uri.scheme);
         if (!success) {
           throw PlatformException(
             code: '200',
-            message:
-                'Could not open browser, probably caused by unavailable custom tabs.',
+            message: 'Could not open browser, probably caused by unavailable custom tabs.',
           );
         }
         resultURI = await completer.future;
@@ -173,8 +131,7 @@ class TwitterLogin {
         queries,
       );
 
-      if ((token.authToken?.isEmpty ?? true) ||
-          (token.authTokenSecret?.isEmpty ?? true)) {
+      if ((token.authToken?.isEmpty ?? true) || (token.authTokenSecret?.isEmpty ?? true)) {
         return AuthResult(
           authToken: token.authToken,
           authTokenSecret: token.authTokenSecret,
@@ -193,8 +150,7 @@ class TwitterLogin {
           token.authTokenSecret!,
         );
       } on Exception {
-        debugPrint(
-            'The rate limit may have been reached or the API may be restricted.');
+        debugPrint('The rate limit may have been reached or the API may be restricted.');
       }
 
       return AuthResult(
@@ -218,18 +174,21 @@ class TwitterLogin {
     }
   }
 
+  /// Get Authorization Code for OAuth 2.0
+  /// [codeChallenge] is required for PKCE flow.
+  /// You generally should pass the codeChallenge derived from your codeVerifier.
+  /// If you intend to use loginV2, use [loginV2] method instead which handles verifier automatically.
   Future<String> getAuthorizationCode({
-    String? codeChallenge,
+    required String codeChallenge,
     bool forceLogin = false,
   }) async {
     String? resultURI;
     final uri = Uri.parse(redirectURI);
 
-    if (codeChallenge == null || codeChallenge.isEmpty) {
-      throw ArgumentError('codeChallenge must not be null or empty');
+    if (codeChallenge.isEmpty) {
+      throw ArgumentError('codeChallenge must not be empty');
     }
 
-    final challenge = codeChallenge;
     final state = createCryptoRandomString(32);
 
     final authorizeUri = Uri.parse('https://x.com/i/oauth2/authorize').replace(
@@ -239,7 +198,7 @@ class TwitterLogin {
         'redirect_uri': redirectURI,
         'scope': 'tweet.read users.read offline.access',
         'state': state,
-        'code_challenge': challenge,
+        'code_challenge': codeChallenge,
         'code_challenge_method': 'S256',
         if (forceLogin) 'prompt': 'login',
       },
@@ -269,16 +228,13 @@ class TwitterLogin {
 
     try {
       if (Platform.isIOS || Platform.isMacOS) {
-        resultURI =
-            await authBrowser.doAuth(authorizeUri.toString(), uri.scheme);
+        resultURI = await authBrowser.doAuth(authorizeUri.toString(), uri.scheme);
       } else if (Platform.isAndroid) {
-        final success =
-            await authBrowser.open(authorizeUri.toString(), uri.scheme);
+        final success = await authBrowser.open(authorizeUri.toString(), uri.scheme);
         if (!success) {
           throw PlatformException(
             code: '200',
-            message:
-                'Could not open browser, probably caused by unavailable custom tabs.',
+            message: 'Could not open browser, probably caused by unavailable custom tabs.',
           );
         }
         resultURI = await completer.future;
@@ -293,7 +249,7 @@ class TwitterLogin {
         throw const CanceledByUserException();
       }
 
-      return getAuthorizationCodeFromRedirectUriV2(
+      return _getAuthorizationCodeFromRedirectUriV2(
         resultURI!,
         expectedState: state,
       );
@@ -306,28 +262,18 @@ class TwitterLogin {
     }
   }
 
-  Future<AuthResult> loginV2({
-    bool forceLogin = false,
-    String? codeVerifier,
-    String? codeChallenge,
-  }) async {
+  /// Login using OAuth 2.0 PKCE flow
+  /// Automatically generates codeVerifier and codeChallenge if not provided.
+  Future<AuthResult> loginV2({bool forceLogin = false}) async {
     // OAuth 2.0 Authorization Code with PKCE (User Access Token)
     // https://docs.x.com/fundamentals/authentication/oauth-2-0/user-access-token
 
     try {
-      if (codeChallenge != null &&
-          (codeVerifier == null || codeVerifier.isEmpty)) {
-        throw ArgumentError(
-            'If you provide a codeChallenge, you must also provide a codeVerifier.');
-      }
-
-      final verifier = (codeVerifier == null || codeVerifier.isEmpty)
-          ? createPkceCodeVerifier()
-          : codeVerifier;
-      final challenge = codeChallenge ?? createPkceCodeChallengeS256(verifier);
+      final codeVerifier = createPkceCodeVerifier();
+      final codeChallenge = createPkceCodeChallengeS256(codeVerifier);
 
       final code = await getAuthorizationCode(
-        codeChallenge: challenge,
+        codeChallenge: codeChallenge,
         forceLogin: forceLogin,
       );
 
@@ -336,7 +282,7 @@ class TwitterLogin {
         clientSecret: apiSecretKey.isEmpty ? null : apiSecretKey,
         code: code,
         redirectUri: redirectURI,
-        codeVerifier: verifier,
+        codeVerifier: codeVerifier,
       );
 
       final accessToken = tokenJson.get<String>('access_token');
@@ -353,8 +299,7 @@ class TwitterLogin {
       try {
         user = await User.getUserDataV2(accessToken);
       } on Exception {
-        debugPrint(
-            'The rate limit may have been reached or the API may be restricted.');
+        debugPrint('The rate limit may have been reached or the API may be restricted.');
       }
 
       return AuthResult(
@@ -374,5 +319,43 @@ class TwitterLogin {
         errorMessage: error.toString(),
       );
     }
+  }
+
+  static String _getAuthorizationCodeFromRedirectUriV2(
+    String redirectUrl, {
+    String? expectedState,
+  }) {
+    final parsed = Uri.parse(redirectUrl);
+    final queries = parsed.queryParameters;
+
+    if (queries['denied'] != null) {
+      throw const CanceledByUserException();
+    }
+
+    final error = queries['error'];
+    if (error != null && error.isNotEmpty) {
+      if (error == 'access_denied') {
+        throw const CanceledByUserException();
+      }
+      final errorDescription = queries['error_description'];
+      if (errorDescription != null && errorDescription.isNotEmpty) {
+        throw Exception('Error Response: $error ($errorDescription)');
+      }
+      throw Exception('Error Response: $error');
+    }
+
+    final returnedState = queries['state'];
+    if (expectedState != null && expectedState.isNotEmpty) {
+      if (returnedState == null || returnedState != expectedState) {
+        throw Exception('Invalid state returned from authorization.');
+      }
+    }
+
+    final code = queries['code'];
+    if (code == null || code.isEmpty) {
+      throw Exception('Authorization code not found.');
+    }
+
+    return code;
   }
 }
