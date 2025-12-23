@@ -1,3 +1,8 @@
+## 5.2.0
+
+- **Breaking Change**: `getAuthorizationCode` no longer accepts `codeChallenge`. It now generates the PKCE parameters internally and returns an `AuthorizationResultV2` object containing both `code` and `codeVerifier`.
+- **Improvement**: Simplified V2 Auth flow to ensure better security and usability.
+
 ## 5.1.1
 
 - **Fix**: Resolved issues with `codeChallenge` and `codeVerifier` handling in V2 flow.
