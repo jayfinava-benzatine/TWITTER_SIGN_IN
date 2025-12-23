@@ -1,3 +1,7 @@
+## 5.4.2
+
+- **Fix**: Fix format issue.
+
 ## 5.4.1
 
 - **Improvement**: Added example code for manually retrieving Auth Code (`getAuthorizationCode`) in the example app.

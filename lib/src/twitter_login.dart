@@ -57,7 +57,8 @@ class TwitterLogin {
 
   static const _channel = MethodChannel('twitter_login');
   static const _eventChannel = EventChannel('twitter_login/event');
-  static final Stream<dynamic> _eventStream = _eventChannel.receiveBroadcastStream();
+  static final Stream<dynamic> _eventStream =
+      _eventChannel.receiveBroadcastStream();
 
   /// Logs the user using OAuth 1.0a
   /// Forces the user to enter their credentials to ensure the correct users account is authorized.
@@ -105,14 +106,17 @@ class TwitterLogin {
     try {
       if (Platform.isIOS || Platform.isMacOS) {
         /// Login to Twitter account with SFAuthenticationSession or ASWebAuthenticationSession.
-        resultURI = await authBrowser.doAuth(requestToken.authorizeURI, uri.scheme);
+        resultURI =
+            await authBrowser.doAuth(requestToken.authorizeURI, uri.scheme);
       } else if (Platform.isAndroid) {
         // Login to Twitter account with chrome_custom_tabs.
-        final success = await authBrowser.open(requestToken.authorizeURI, uri.scheme);
+        final success =
+            await authBrowser.open(requestToken.authorizeURI, uri.scheme);
         if (!success) {
           throw PlatformException(
             code: '200',
-            message: 'Could not open browser, probably caused by unavailable custom tabs.',
+            message:
+                'Could not open browser, probably caused by unavailable custom tabs.',
           );
         }
         resultURI = await completer.future;
@@ -144,7 +148,8 @@ class TwitterLogin {
         queries,
       );
 
-      if ((token.authToken?.isEmpty ?? true) || (token.authTokenSecret?.isEmpty ?? true)) {
+      if ((token.authToken?.isEmpty ?? true) ||
+          (token.authTokenSecret?.isEmpty ?? true)) {
         return AuthResult(
           authToken: token.authToken,
           authTokenSecret: token.authTokenSecret,
@@ -163,7 +168,8 @@ class TwitterLogin {
           token.authTokenSecret!,
         );
       } on Exception {
-        debugPrint('The rate limit may have been reached or the API may be restricted.');
+        debugPrint(
+            'The rate limit may have been reached or the API may be restricted.');
       }
 
       return AuthResult(
@@ -211,7 +217,8 @@ class TwitterLogin {
     final v2ClientId = clientId ?? apiKey;
 
     // Using twitter.com/i/oauth2/authorize
-    final authorizeUri = Uri.parse('https://twitter.com/i/oauth2/authorize').replace(
+    final authorizeUri =
+        Uri.parse('https://twitter.com/i/oauth2/authorize').replace(
       queryParameters: <String, String>{
         'response_type': 'code',
         'client_id': v2ClientId,
@@ -249,13 +256,16 @@ class TwitterLogin {
 
     try {
       if (Platform.isIOS || Platform.isMacOS) {
-        resultURI = await authBrowser.doAuth(authorizeUri.toString(), uri.scheme);
+        resultURI =
+            await authBrowser.doAuth(authorizeUri.toString(), uri.scheme);
       } else if (Platform.isAndroid) {
-        final success = await authBrowser.open(authorizeUri.toString(), uri.scheme);
+        final success =
+            await authBrowser.open(authorizeUri.toString(), uri.scheme);
         if (!success) {
           throw PlatformException(
             code: '200',
-            message: 'Could not open browser, probably caused by unavailable custom tabs.',
+            message:
+                'Could not open browser, probably caused by unavailable custom tabs.',
           );
         }
         resultURI = await completer.future;
@@ -331,7 +341,8 @@ class TwitterLogin {
       try {
         user = await User.getUserDataV2(accessToken);
       } on Exception {
-        debugPrint('The rate limit may have been reached or the API may be restricted.');
+        debugPrint(
+            'The rate limit may have been reached or the API may be restricted.');
       }
 
       return AuthResult(
