@@ -176,10 +176,14 @@ class TwitterLogin {
 
   /// Get Authorization Code for OAuth 2.0
   /// [codeChallenge] is required for PKCE flow.
-  /// You generally should pass the codeChallenge derived from your codeVerifier.
-  /// If you intend to use loginV2, use [loginV2] method instead which handles verifier automatically.
+  /// [scope] list to request, defaults to ["tweet.read", "users.read", "offline.access"].
   Future<String> getAuthorizationCode({
     required String codeChallenge,
+    List<String> scope = const [
+      'tweet.read',
+      'users.read',
+      'offline.access',
+    ],
     bool forceLogin = false,
   }) async {
     String? resultURI;
@@ -191,12 +195,13 @@ class TwitterLogin {
 
     final state = createCryptoRandomString(32);
 
-    final authorizeUri = Uri.parse('https://x.com/i/oauth2/authorize').replace(
+    // Using twitter.com/i/oauth2/authorize
+    final authorizeUri = Uri.parse('https://twitter.com/i/oauth2/authorize').replace(
       queryParameters: <String, String>{
         'response_type': 'code',
         'client_id': apiKey,
         'redirect_uri': redirectURI,
-        'scope': 'tweet.read users.read offline.access',
+        'scope': scope.join(' '),
         'state': state,
         'code_challenge': codeChallenge,
         'code_challenge_method': 'S256',
@@ -264,7 +269,14 @@ class TwitterLogin {
 
   /// Login using OAuth 2.0 PKCE flow
   /// Automatically generates codeVerifier and codeChallenge if not provided.
-  Future<AuthResult> loginV2({bool forceLogin = false}) async {
+  Future<AuthResult> loginV2({
+    bool forceLogin = false,
+    List<String> scope = const [
+      'tweet.read',
+      'users.read',
+      'offline.access',
+    ],
+  }) async {
     // OAuth 2.0 Authorization Code with PKCE (User Access Token)
     // https://docs.x.com/fundamentals/authentication/oauth-2-0/user-access-token
 
@@ -274,6 +286,7 @@ class TwitterLogin {
 
       final code = await getAuthorizationCode(
         codeChallenge: codeChallenge,
+        scope: scope,
         forceLogin: forceLogin,
       );
 

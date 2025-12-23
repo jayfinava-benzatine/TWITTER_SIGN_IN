@@ -1,7 +1,7 @@
 name: twitter_sign_in
 description: A Flutter plugin that provides a cross-platform API for authenticating users with Twitter, handling OAuth flow and access tokens.
 
-version: 5.1.0
+version: 5.1.1
 
 homepage: https://github.com/jayfinava-benzatine/twitter_sign_in
 repository: https://github.com/jayfinava-benzatine/twitter_sign_in
