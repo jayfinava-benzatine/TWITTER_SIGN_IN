@@ -11,9 +11,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final String apiKey = 'S9GzajUq5r5V4VIvT0V0M1HrP';
-  final String apiSecretKey =
-      'U6NhHZxqRahi2StQYLz6mVhMZEow1HsaZ6igkNgJa47dfQ4fhI';
+  final String apiKey = 'YOUR_API_KEY_HERE';
+  final String apiSecretKey = 'YOUR_API_SECRET_KEY_HERE';
+  final String clientId = 'YOUR_CLIENT_ID_HERE';
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +136,9 @@ class _MyAppState extends State<MyApp> {
     /// to ensure the correct users account is authorized.
     /// If you want to implement Twitter account switching, set [force_login] to true
     /// login(forceLogin: true);
-    final authResult = await twitterLogin.loginV2();
+    final authResult = await twitterLogin.loginV2(
+      clientId: clientId,
+    );
     switch (authResult.status) {
       case TwitterLoginStatus.loggedIn:
         // success

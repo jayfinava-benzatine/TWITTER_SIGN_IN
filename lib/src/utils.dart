@@ -19,7 +19,7 @@ const ACCESS_TOKEN_URI = 'https://api.twitter.com/oauth/access_token';
 const ACCOUNT_VERIFY_URI =
     'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true';
 
-const USER_LOCKUP_URI = 'https://api.twitter.com/2/users';
+const USER_LOOKUP_URI = 'https://api.twitter.com/2/users';
 
 ///
 String? generateAuthHeader(Map<String, dynamic> params) =>

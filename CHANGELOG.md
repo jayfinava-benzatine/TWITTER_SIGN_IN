@@ -1,3 +1,10 @@
+## 5.4.0
+
+- **Fix**: Critical fix for OAuth 2.0 PKCE flow users. `loginV2` no longer sends the `apiSecretKey` (Consumer Secret) as the `clientSecret` by default, as public clients (mobile apps) should not use a secret with PKCE.
+- **New Feature**: Added optional `clientSecret` parameter to `loginV2` for confidential clients who might need it.
+- **Improved**: Documentation and example updated to explicitly use `clientId` for V2 flows.
+- **Fix**: Fixed typo in `USER_LOOKUP_URI`.
+
 ## 5.3.0
 
 - **New Feature**: Added `clientId` parameter to `loginV2` and `getAuthorizationCode`. This allows using a dedicated OAuth 2.0 Client ID (which is different from the Consumer Key used in V1), fixing "Something went wrong" errors during authentication.

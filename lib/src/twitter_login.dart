@@ -304,6 +304,7 @@ class TwitterLogin {
       'offline.access',
     ],
     String? clientId,
+    String? clientSecret,
   }) async {
     // OAuth 2.0 Authorization Code with PKCE (User Access Token)
     // https://docs.x.com/fundamentals/authentication/oauth-2-0/user-access-token
@@ -317,10 +318,9 @@ class TwitterLogin {
 
       final tokenJson = await Oauth2.exchangeAuthorizationCode(
         clientId: clientId ?? apiKey,
-        // Usually V2 Client Secret is not required for public clients (mobile apps),
-        // but we respect what is passed. If apiSecretKey is Consumer Secret, it might fail if sent as Client Secret.
-        // Users should ideally strictly use V2 credentials if using loginV2.
-        clientSecret: apiSecretKey.isEmpty ? null : apiSecretKey,
+        // For public clients (PKCE), clientSecret should usually be null.
+        // We do NOT default to apiSecretKey here because V2 Client Secret is different from Consumer Secret.
+        clientSecret: clientSecret,
         code: authResult.code,
         redirectUri: redirectURI,
         codeVerifier: authResult.codeVerifier,
