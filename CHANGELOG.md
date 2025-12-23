@@ -1,6 +1,7 @@
 ## 5.4.2
 
 - **Fix**: Fix format issue.
+- **New Feature**: Added optional `challengeCode` parameter to `loginV2` for confidential clients who might need it.
 
 ## 5.4.1
 

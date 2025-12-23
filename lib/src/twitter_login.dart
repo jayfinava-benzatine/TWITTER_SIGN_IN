@@ -205,13 +205,15 @@ class TwitterLogin {
       'offline.access',
     ],
     String? clientId,
+    String? challengeCode,
     bool forceLogin = false,
   }) async {
     String? resultURI;
     final uri = Uri.parse(redirectURI);
 
     final codeVerifier = createPkceCodeVerifier();
-    final codeChallenge = createPkceCodeChallengeS256(codeVerifier);
+    final codeChallenge =
+        challengeCode ?? createPkceCodeChallengeS256(codeVerifier);
     final state = createCryptoRandomString(32);
 
     final v2ClientId = clientId ?? apiKey;
@@ -306,6 +308,7 @@ class TwitterLogin {
     ],
     String? clientId,
     String? clientSecret,
+    String? challengeCode,
   }) async {
     // OAuth 2.0 Authorization Code with PKCE (User Access Token)
     // https://docs.x.com/fundamentals/authentication/oauth-2-0/user-access-token
@@ -315,6 +318,7 @@ class TwitterLogin {
         scope: scope,
         forceLogin: forceLogin,
         clientId: clientId,
+        challengeCode: challengeCode,
       );
 
       final tokenJson = await Oauth2.exchangeAuthorizationCode(
