@@ -1,3 +1,9 @@
+## 5.4.1
+
+- **Improvement**: Added example code for manually retrieving Auth Code (`getAuthorizationCode`) in the example app.
+- **Fix**: Corrected Typo in `USER_LOOKUP_URI`.
+- **Refactor**: Cleaned up debug prints.
+
 ## 5.4.0
 
 - **Fix**: Critical fix for OAuth 2.0 PKCE flow users. `loginV2` no longer sends the `apiSecretKey` (Consumer Secret) as the `clientSecret` by default, as public clients (mobile apps) should not use a secret with PKCE.

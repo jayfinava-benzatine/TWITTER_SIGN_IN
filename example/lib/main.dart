@@ -11,9 +11,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final String apiKey = 'YOUR_API_KEY_HERE';
-  final String apiSecretKey = 'YOUR_API_SECRET_KEY_HERE';
-  final String clientId = 'YOUR_CLIENT_ID_HERE';
+  final String apiKey = 'REPLACE_YOUR_API_KEY';
+  final String apiSecretKey = 'REPLACE_YOUR_API_SECRET_KEY';
+  final String clientId = 'REPLACE_YOUR_CLIENT_ID';
+  final String redirectURI = 'REPLACE_YOUR_REDIRECT_URI';
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +69,23 @@ class _MyAppState extends State<MyApp> {
                   ),
                   onPressed: () async {
                     await loginV2();
+                  },
+                ),
+              ),
+              const SizedBox(height: 24),
+              Center(
+                child: TextButton(
+                  child: const Text('Get Auth Code V2 (Manual)'),
+                  style: ButtonStyle(
+                    foregroundColor:
+                        WidgetStateProperty.all<Color>(Colors.white),
+                    backgroundColor:
+                        WidgetStateProperty.all<Color>(Colors.green),
+                    minimumSize:
+                        WidgetStateProperty.all<Size>(const Size(160, 48)),
+                  ),
+                  onPressed: () async {
+                    await getAuthCodeV2();
                   },
                 ),
               ),
@@ -153,6 +171,28 @@ class _MyAppState extends State<MyApp> {
         // error
         print('====== Login error ======');
         break;
+    }
+  }
+
+  /// Get only the Auth Code (V2) for manual handling
+  Future getAuthCodeV2() async {
+    final twitterLogin = TwitterLogin(
+      apiKey: apiKey,
+      apiSecretKey: apiSecretKey,
+      redirectURI: redirectURI,
+    );
+
+    try {
+      final authResult = await twitterLogin.getAuthorizationCode(
+        clientId: clientId,
+      );
+      print('====== Auth Code Success ======');
+      print('Code: ${authResult.code}');
+      print('Verifier: ${authResult.codeVerifier}');
+      // You can now send these to your backend to exchange for tokens
+    } catch (e) {
+      print('====== Auth Code Error ======');
+      print(e);
     }
   }
 }
