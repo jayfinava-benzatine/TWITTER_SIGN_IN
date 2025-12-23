@@ -1,3 +1,8 @@
+## 5.3.0
+
+- **New Feature**: Added `clientId` parameter to `loginV2` and `getAuthorizationCode`. This allows using a dedicated OAuth 2.0 Client ID (which is different from the Consumer Key used in V1), fixing "Something went wrong" errors during authentication.
+- **Improvement**: `AuthorizationResultV2` is now returned by `getAuthorizationCode` for better integration.
+
 ## 5.2.0
 
 - **Breaking Change**: `getAuthorizationCode` no longer accepts `codeChallenge`. It now generates the PKCE parameters internally and returns an `AuthorizationResultV2` object containing both `code` and `codeVerifier`.
