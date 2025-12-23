@@ -5,8 +5,7 @@ import 'package:twitter_sign_in/src/utils.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class Oauth2 {
-  static const String _oauth2TokenUrl =
-      'https://api.twitter.com/2/oauth2/token';
+  static const String _oauth2TokenUrl = 'https://api.x.com/2/oauth2/token';
 
   /// get applicatoin Bearer Token.
   ///

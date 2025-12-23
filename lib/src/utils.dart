@@ -147,6 +147,12 @@ String base64UrlEncodeNoPadding(List<int> bytes) {
   return base64Url.encode(bytes).replaceAll('=', '');
 }
 
+String createPkceCodeVerifier([int byteLength = 96]) {
+  final values =
+      List<int>.generate(byteLength, (i) => Random.secure().nextInt(256));
+  return base64UrlEncodeNoPadding(values);
+}
+
 String createPkceCodeChallengeS256(String codeVerifier) {
   final digest = sha256.convert(utf8.encode(codeVerifier));
   return base64UrlEncodeNoPadding(digest.bytes);

@@ -44,7 +44,8 @@ class TwitterLogin {
 
   static const _channel = MethodChannel('twitter_login');
   static const _eventChannel = EventChannel('twitter_login/event');
-  static final Stream<dynamic> _eventStream = _eventChannel.receiveBroadcastStream();
+  static final Stream<dynamic> _eventStream =
+      _eventChannel.receiveBroadcastStream();
 
   static String getAuthorizationCodeFromRedirectUriV2(
     String redirectUrl, {
@@ -59,6 +60,13 @@ class TwitterLogin {
 
     final error = queries['error'];
     if (error != null && error.isNotEmpty) {
+      if (error == 'access_denied') {
+        throw const CanceledByUserException();
+      }
+      final errorDescription = queries['error_description'];
+      if (errorDescription != null && errorDescription.isNotEmpty) {
+        throw Exception('Error Response: $error ($errorDescription)');
+      }
       throw Exception('Error Response: $error');
     }
 
@@ -99,7 +107,7 @@ class TwitterLogin {
 
     final uri = Uri.parse(redirectURI);
     final completer = Completer<String?>();
-    StreamSubscription<void>? subscribe;
+    StreamSubscription<dynamic>? subscribe;
 
     if (Platform.isAndroid) {
       await _channel.invokeMethod('setScheme', uri.scheme);
@@ -107,8 +115,6 @@ class TwitterLogin {
         if (data['type'] == 'url') {
           if (!completer.isCompleted) {
             completer.complete(data['url']?.toString());
-          } else {
-            throw const CanceledByUserException();
           }
         }
       });
@@ -125,18 +131,20 @@ class TwitterLogin {
     try {
       if (Platform.isIOS || Platform.isMacOS) {
         /// Login to Twitter account with SFAuthenticationSession or ASWebAuthenticationSession.
-        resultURI = await authBrowser.doAuth(requestToken.authorizeURI, uri.scheme);
+        resultURI =
+            await authBrowser.doAuth(requestToken.authorizeURI, uri.scheme);
       } else if (Platform.isAndroid) {
         // Login to Twitter account with chrome_custom_tabs.
-        final success = await authBrowser.open(requestToken.authorizeURI, uri.scheme);
+        final success =
+            await authBrowser.open(requestToken.authorizeURI, uri.scheme);
         if (!success) {
           throw PlatformException(
             code: '200',
-            message: 'Could not open browser, probably caused by unavailable custom tabs.',
+            message:
+                'Could not open browser, probably caused by unavailable custom tabs.',
           );
         }
         resultURI = await completer.future;
-        await subscribe?.cancel();
       } else {
         throw PlatformException(
           code: '100',
@@ -165,7 +173,8 @@ class TwitterLogin {
         queries,
       );
 
-      if ((token.authToken?.isEmpty ?? true) || (token.authTokenSecret?.isEmpty ?? true)) {
+      if ((token.authToken?.isEmpty ?? true) ||
+          (token.authTokenSecret?.isEmpty ?? true)) {
         return AuthResult(
           authToken: token.authToken,
           authTokenSecret: token.authTokenSecret,
@@ -184,7 +193,8 @@ class TwitterLogin {
           token.authTokenSecret!,
         );
       } on Exception {
-        debugPrint('The rate limit may have been reached or the API may be restricted.');
+        debugPrint(
+            'The rate limit may have been reached or the API may be restricted.');
       }
 
       return AuthResult(
@@ -203,23 +213,26 @@ class TwitterLogin {
         status: TwitterLoginStatus.error,
         errorMessage: error.toString(),
       );
+    } finally {
+      await subscribe?.cancel();
     }
   }
 
-  Future<String> getAuthorizationCode({String? codeChallenge}) async {
+  Future<String> getAuthorizationCode({
+    String? codeChallenge,
+    bool forceLogin = false,
+  }) async {
     String? resultURI;
     final uri = Uri.parse(redirectURI);
 
-    if (codeChallenge == null) {
-      debugPrint('You must need provide the Code Challenge.');
-      return '';
+    if (codeChallenge == null || codeChallenge.isEmpty) {
+      throw ArgumentError('codeChallenge must not be null or empty');
     }
 
-    final verifier = createCryptoRandomString(64);
-    final challenge = createPkceCodeChallengeS256(verifier);
+    final challenge = codeChallenge;
     final state = createCryptoRandomString(32);
 
-    final authorizeUri = Uri.parse('https://twitter.com/i/oauth2/authorize').replace(
+    final authorizeUri = Uri.parse('https://x.com/i/oauth2/authorize').replace(
       queryParameters: <String, String>{
         'response_type': 'code',
         'client_id': apiKey,
@@ -228,11 +241,12 @@ class TwitterLogin {
         'state': state,
         'code_challenge': challenge,
         'code_challenge_method': 'S256',
+        if (forceLogin) 'prompt': 'login',
       },
     );
 
     final completer = Completer<String?>();
-    late StreamSubscription<void> subscribe;
+    StreamSubscription<dynamic>? subscribe;
 
     if (Platform.isAndroid) {
       await _channel.invokeMethod('setScheme', uri.scheme);
@@ -240,8 +254,6 @@ class TwitterLogin {
         if (data['type'] == 'url') {
           if (!completer.isCompleted) {
             completer.complete(data['url']?.toString());
-          } else {
-            debugPrint('The user cancelled the login flow.');
           }
         }
       });
@@ -257,33 +269,40 @@ class TwitterLogin {
 
     try {
       if (Platform.isIOS || Platform.isMacOS) {
-        resultURI = await authBrowser.doAuth(authorizeUri.toString(), uri.scheme);
+        resultURI =
+            await authBrowser.doAuth(authorizeUri.toString(), uri.scheme);
       } else if (Platform.isAndroid) {
-        final success = await authBrowser.open(authorizeUri.toString(), uri.scheme);
+        final success =
+            await authBrowser.open(authorizeUri.toString(), uri.scheme);
         if (!success) {
-          debugPrint('Could not open browser, probably caused by unavailable custom tabs.');
-          return '';
+          throw PlatformException(
+            code: '200',
+            message:
+                'Could not open browser, probably caused by unavailable custom tabs.',
+          );
         }
         resultURI = await completer.future;
       } else {
-        debugPrint('Not supported by this os.');
-        return '';
+        throw PlatformException(
+          code: '100',
+          message: 'Not supported by this os.',
+        );
       }
 
       if (resultURI?.isEmpty ?? true) {
-        debugPrint('The user cancelled the login flow.');
-        return '';
+        throw const CanceledByUserException();
       }
 
       return getAuthorizationCodeFromRedirectUriV2(
         resultURI!,
         expectedState: state,
       );
+    } on CanceledByUserException {
+      rethrow;
     } catch (error) {
-      debugPrint('Failed to get authorization code: $error');
-      return '';
+      throw Exception('Failed to get authorization code: $error');
     } finally {
-      await subscribe.cancel();
+      await subscribe?.cancel();
     }
   }
 
@@ -296,9 +315,21 @@ class TwitterLogin {
     // https://docs.x.com/fundamentals/authentication/oauth-2-0/user-access-token
 
     try {
-      final code = await getAuthorizationCode(codeChallenge: codeChallenge);
+      if (codeChallenge != null &&
+          (codeVerifier == null || codeVerifier.isEmpty)) {
+        throw ArgumentError(
+            'If you provide a codeChallenge, you must also provide a codeVerifier.');
+      }
 
-      final verifier = codeVerifier ?? createCryptoRandomString(64);
+      final verifier = (codeVerifier == null || codeVerifier.isEmpty)
+          ? createPkceCodeVerifier()
+          : codeVerifier;
+      final challenge = codeChallenge ?? createPkceCodeChallengeS256(verifier);
+
+      final code = await getAuthorizationCode(
+        codeChallenge: challenge,
+        forceLogin: forceLogin,
+      );
 
       final tokenJson = await Oauth2.exchangeAuthorizationCode(
         clientId: apiKey,
@@ -322,7 +353,8 @@ class TwitterLogin {
       try {
         user = await User.getUserDataV2(accessToken);
       } on Exception {
-        debugPrint('The rate limit may have been reached or the API may be restricted.');
+        debugPrint(
+            'The rate limit may have been reached or the API may be restricted.');
       }
 
       return AuthResult(
