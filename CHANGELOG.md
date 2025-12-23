@@ -1,3 +1,7 @@
+## 5.0.5
+
+- Version bump for pub.dev release.
+
 ## 5.0.4
 
 - **Enhanced Error Handling**: Improved error messages and handling throughout the authentication flow.
