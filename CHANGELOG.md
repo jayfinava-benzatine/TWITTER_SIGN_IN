@@ -1,9 +1,12 @@
+## 5.1.1
+
+- **Fix**: Resolved issues with `codeChallenge` and `codeVerifier` handling in V2 flow.
+
 ## 5.1.0
 
 - **Breaking Change**: `loginV2` now generates `codeVerifier` and `codeChallenge` automatically. Manual passing of these parameters has been removed to simplify the API and ensure security best practices.
 - **Refactor**: Strict separation between `login` (OAuth 1.0a) and `loginV2` (OAuth 2.0 PKCE) flows.
 - **New Feature**: `getAuthorizationCode` optimized for backend-side token exchange, accepting `codeChallenge` directly.
-- **Fix**: Resolved issues with `codeChallenge` and `codeVerifier` handling in V2 flow.
 
 ## 5.0.5
 
