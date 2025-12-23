@@ -1,3 +1,8 @@
+## 5.5.0
+
+- **New Feature**: Added `users.email` scope to default scopes list for OAuth 2.0 flows.
+- **Refactor**: Improved code formatting in `AuthorizationResultV2` class.
+
 ## 5.4.2
 
 - **Fix**: Fix format issue.
